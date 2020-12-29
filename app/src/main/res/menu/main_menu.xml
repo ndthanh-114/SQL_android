@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_action_search"
+        app:showAsAction="always"
+        app:actionViewClass="android.widget.SearchView"
+        android:title="Search" />
+    <item
+        android:id="@+id/action_add"
+        app:showAsAction="always"
+        app:actionViewClass="android.widget.Button"
+        android:icon="@drawable/ic_baseline_add_24"
+        android:title="Thêm sinh viên" />
+
+</menu>
