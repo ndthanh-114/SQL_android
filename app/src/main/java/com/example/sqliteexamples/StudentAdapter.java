@@ -55,7 +55,7 @@ public class StudentAdapter extends BaseAdapter {
             viewHolder=(ViewHolder) view.getTag();
         }
 
-        if(i>=0){
+        if(i>=0&&i<items.size()){
             ItemModel itemModel=items.get(i);
             viewHolder.mssv.setText(itemModel.mssv);
             viewHolder.hoTen.setText(itemModel.hoTen);

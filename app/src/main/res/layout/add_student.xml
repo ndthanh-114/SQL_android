@@ -15,7 +15,7 @@
             android:layout_weight="1"
             android:textSize="24sp"/>
         <EditText
-            android:layout_weight="4"
+            android:layout_weight="8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/edit_mssv"/>
@@ -33,28 +33,32 @@
             android:layout_weight="1"
             android:textSize="24sp"/>
         <EditText
-            android:layout_weight="4"
+            android:layout_weight="9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/edit_hoten"/>
     </LinearLayout>
+
     <LinearLayout
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
+
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:text="Nhập năm sinh: "
             android:layout_weight="1"
-            android:textSize="24sp"/>
+            android:text="Nhập năm sinh: "
+            android:textSize="24sp" />
+
         <EditText
-            android:layout_weight="4"
+            android:id="@+id/edit_nam_sinh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/edit_nam_sinh"/>
+            android:layout_weight="8" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
@@ -67,7 +71,7 @@
             android:layout_weight="1"
             android:textSize="24sp"/>
         <EditText
-            android:layout_weight="4"
+            android:layout_weight="8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/edit_email"/>
@@ -84,7 +88,7 @@
             android:layout_weight="1"
             android:textSize="24sp"/>
         <EditText
-            android:layout_weight="4"
+            android:layout_weight="8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/edit_dia_chi"/>

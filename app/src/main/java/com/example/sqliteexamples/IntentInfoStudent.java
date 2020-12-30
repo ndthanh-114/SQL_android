@@ -57,7 +57,6 @@ public class IntentInfoStudent extends Activity{
 // return sending an OK signal to calling activity
         setResult(Activity.RESULT_OK, myLocalIntent);
 
-
     }//onCreate
 
     protected void onStop() {

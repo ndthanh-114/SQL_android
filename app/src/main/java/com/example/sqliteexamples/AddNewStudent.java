@@ -5,23 +5,24 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import io.bloco.faker.Faker;
+import java.util.List;
 
-public class IntentAddStudent extends  Activity{
+public class AddNewStudent extends Activity {
 
-    Button btnDone;
     EditText mssv;
     EditText hoTen;
     EditText ngaySinh;
     EditText email;
     EditText diaChi;
     SQLiteDatabase db;
-
+    Button troVe;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,38 +35,40 @@ public class IntentAddStudent extends  Activity{
         ngaySinh=findViewById(R.id.edit_nam_sinh);
         email=findViewById(R.id.edit_email);
         diaChi=findViewById(R.id.edit_dia_chi);
-        btnDone=findViewById(R.id.btn_done);
-        btnDone.setOnClickListener(new View.OnClickListener() {
+        troVe=findViewById(R.id.btn_done);
+        Intent myLocalIntent = getIntent();
+        troVe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String smssv=mssv.getText().toString();
+                String shoten=hoTen.getText().toString();
+                String sngaysinh=ngaySinh.getText().toString();
+                String semail=email.getText().toString();
+                String sdiachi=diaChi.getText().toString();
+
+
                 db.beginTransaction();
                 try {
-                    String sql = String.format("insert into sinhvien(mssv, hoten, ngaysinh, email, diachi) " +
-                            "values('%s', '%s', '%s', '%s', '%s')", mssv.getText().toString(), hoTen.getText().toString(), ngaySinh.getText().toString(), email.getText().toString(), diaChi.getText().toString());
-                    db.execSQL(sql);
 
+                    String sql = String.format("insert into sinhvien(mssv, hoten, ngaysinh, email, diachi) " +
+                            "values('%s', '%s', '%s', '%s', '%s')", smssv, shoten, sngaysinh, semail, sdiachi);
+                    db.execSQL(sql);
+                    Toast.makeText(getBaseContext(), "Insert Success", Toast.LENGTH_LONG).show();
                     db.setTransactionSuccessful();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 } finally {
                     db.endTransaction();
-                    finish();
                 }
+                Log.v("Sucess: ", "Insert into");
+                finish();
             }
         });
 
 
-//        String sql= "select * from sinhvien where mssv="+ mssvIntent;
-//        Cursor cs=db.rawQuery(sql, null);
-//        cs.moveToPosition(0);
-//
-//        mssv.setText("MSSV: "+cs.getString(0));
-//        hoTen.setText("Họ tên: "+cs.getString(1));
-//        ngaySinh.setText("Ngày sinh: "+cs.getString(2));
-//        email.setText("Email: "+cs.getString(3));
-//        diaChi.setText("Địa chỉ: "+cs.getString(4));
+
+
 // return sending an OK signal to calling activity
-            Intent myLocalIntent=getIntent();
         setResult(Activity.RESULT_OK, myLocalIntent);
 
 

@@ -1,5 +1,6 @@
 package com.example.sqliteexamples;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,9 +11,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -37,7 +40,6 @@ public class StudentListActivity extends AppCompatActivity {
         actionBar.setTitle("SQLite");
         actionBar.setDisplayShowCustomEnabled(true);
 
-
         String dataPath = getFilesDir() + "/student_data";
         db = SQLiteDatabase.openDatabase(dataPath, null, SQLiteDatabase.CREATE_IF_NECESSARY);
 
@@ -54,8 +56,8 @@ public class StudentListActivity extends AppCompatActivity {
             items.add(new ItemModel(mssv, hoTen, email));
         }
 
-         listView = findViewById(R.id.list_students);
-         adapter = new StudentAdapter(this, db, items);
+        listView = findViewById(R.id.list_students);
+        adapter = new StudentAdapter(this, db, items);
         listView.setAdapter(adapter);
         registerForContextMenu(listView);
         listView.setLongClickable(true);
@@ -80,8 +82,21 @@ public class StudentListActivity extends AppCompatActivity {
         });
 
     }
-    public void setCurrentAdapter(StudentAdapter adapter){
+    public void setListView(){
+        String sql = "select * from sinhvien";
+        Cursor c1 = db.rawQuery(sql, null);
+        c1.moveToPosition(-1);
+        items=new ArrayList<>();
+        while ( c1.moveToNext() ){
+            String  mssv= c1.getString(0);
+            String hoTen = c1.getString(1);
+            String email = c1.getString(c1.getColumnIndex("email"));
 
+            items.add(new ItemModel(mssv, hoTen, email));
+        }
+    }
+    public void setCurrentAdapter(StudentAdapter adapter){
+        adapter = new StudentAdapter(this, db, items);
         listView.setAdapter(adapter);
         registerForContextMenu(listView);
         listView.setLongClickable(true);
@@ -89,39 +104,12 @@ public class StudentListActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu,menu);
-//
-//        Button buttonAdd =(Button) menu.findItem(R.id.action_add);
-//        buttonAdd.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent myAddStudent = new Intent(StudentListActivity.this,
-//                        IntentAddStudent.class);
-//
-//                startActivityForResult(myAddStudent, 102);
-//            }
-//        });
 
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                String sql="select * from sinhvien where mssv like '%"+query+"%'"+"or hoten like '%"+query+"%'";
-               try{
-                   Cursor cs=db.rawQuery(sql, null);
-                   cs.moveToPosition(-1);
 
-                   while ( cs.moveToNext() ){
-                       String  mssv= cs.getString(0);
-                       String hoTen = cs.getString(1);
-                       String email = cs.getString(cs.getColumnIndex("email"));
-
-                       items.add(new ItemModel(mssv, hoTen, email));
-                   }
-                   adapter=new StudentAdapter(getBaseContext(), db, items);
-                   setCurrentAdapter(adapter);
-               }catch(Exception e){
-                   Log.v("Error: ", e.getMessage());
-               }
             return false;
             }
 
@@ -158,6 +146,20 @@ public class StudentListActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.action_add) {
+            Intent myIntentInfoStudent = new Intent(StudentListActivity.this,
+                    AddNewStudent.class);
+
+            startActivityForResult(myIntentInfoStudent, 102);
+        }else if(item.getItemId()==R.id.action_reset){
+            this.setListView();
+            this.setCurrentAdapter(adapter);
+        }
+        return false;
+
+    }
 
     private void createRandomData() {
         db.beginTransaction();
@@ -205,6 +207,11 @@ public class StudentListActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         try {
             if ((requestCode == 101 ) && (resultCode == Activity.RESULT_OK)){
+            }
+            if((requestCode==102)&& (resultCode == Activity.RESULT_OK)){
+
+                this.setListView();
+                this.setCurrentAdapter(adapter);
             }
         }
         catch (Exception e) {
